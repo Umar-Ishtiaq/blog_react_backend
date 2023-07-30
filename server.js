@@ -20,7 +20,7 @@ const postSchema = new mongoose.Schema({
     content: String
 })
 
-const Post = mongoose.model('Post', postSchema)
+const Post = mongoose.model('Post', postSchema, 'Posts')
 
 //get all posts
 app.get('/posts', async(req, res)=> {
@@ -29,21 +29,22 @@ app.get('/posts', async(req, res)=> {
 })
 
 //get one post
-app.get('/posts/:id', async(req,res)=> {
+app.get('/posts/:id', async (req,res)=> {
     const post = await Post.findById(req.params.id)
     res.send(post)
 })
 
 //create new post
-app.post('/posts', async(req,res)=>{
+app.post('/posts', async (req,res)=>{
     const newPost = new Post(req.body)
     const savedPost = await newPost.save()
     res.send(savedPost)
 })
 
 //delete post
-app.delete('/posts/:id', async (req,res)=> {
-    await Post.findByIdAndRemove(req.params.id)
+app.delete('/delete/:id', async (req,res)=> {
+    console.log("Delete is called")
+    await Post.findByIdAndDelete(req.params.id)
     res.status(200).send('Post Deleted')
 })
 
